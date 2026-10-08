@@ -6,6 +6,7 @@ const swaggerUi = require('swagger-ui-express');
 const { errorHandler, notFoundHandler } = require('./errors');
 
 const authRoutes = require('./routes/auth');
+const healthRoutes = require('./routes/health');
 const provinceRoutes = require('./routes/provinces');
 const districtRoutes = require('./routes/districts');
 const substationRoutes = require('./routes/substations');
@@ -31,6 +32,10 @@ app.use(helmet({
 app.use(cors());
 app.use(express.json());
 app.use('/api', apiLimiter);
+
+// System health check endpoint
+app.use('/health', healthRoutes);
+app.use('/api/health', healthRoutes);
 
 // Removed Content-Type middleware as res.json() handles it natively
 
