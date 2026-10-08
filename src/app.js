@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
 const swaggerUi = require('swagger-ui-express');
 const { errorHandler, notFoundHandler } = require('./errors');
 
@@ -12,6 +13,9 @@ const openApiSpec = require('./openapi');
 
 const app = express();
 
+app.use(helmet({
+    contentSecurityPolicy: false // Allows Swagger UI assets while enforcing standard security headers
+}));
 app.use(cors());
 app.use(express.json());
 
