@@ -1,0 +1,226 @@
+{
+  "info": {
+    "name": "Solar Generation Web API",
+    "description": "Sri Lanka Sustainable Energy Authority - Real-Time Solar Generation Monitoring API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Monitoring",
+      "item": [
+        {
+          "name": "System Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["health"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Get Token - National Analyst",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin.national\",\n  \"password\": \"Admin@123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/token",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "token"]
+            }
+          }
+        },
+        {
+          "name": "Get Token - Province Analyst (Western)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"analyst.western\",\n  \"password\": \"Analyst@123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/token",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "token"]
+            }
+          }
+        },
+        {
+          "name": "Get Token - Device User (MTR-100001)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"MTR-100001\",\n  \"password\": \"Solar@1\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/token",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "token"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Provinces",
+      "item": [
+        {
+          "name": "Get All Provinces (Filtered by Jurisdiction)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/provinces",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "provinces"]
+            }
+          }
+        },
+        {
+          "name": "Get Province by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/provinces/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "provinces", "1"]
+            }
+          }
+        },
+        {
+          "name": "Get Districts in Province",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/provinces/1/districts",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "provinces", "1", "districts"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Installations & Telemetry",
+      "item": [
+        {
+          "name": "Get Installation Details",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/installations/1/details",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "installations", "1", "details"]
+            }
+          }
+        },
+        {
+          "name": "Get Installation Last Reading",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/installations/1/last-reading",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "installations", "1", "last-reading"]
+            }
+          }
+        },
+        {
+          "name": "Post Telemetry Reading (Device Scope)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"recorded_at\": \"2026-10-27T12:00:00.000Z\",\n  \"power_kw\": 4.75,\n  \"energy_kwh\": 450.25,\n  \"voltage\": 232.0\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/installations/1/readings",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "installations", "1", "readings"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
