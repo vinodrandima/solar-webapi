@@ -4,6 +4,7 @@ const { authenticate, requireRole, enforceJurisdiction, requireWriteScope } = re
 const { handleConditionalGet } = require('../util/conditional');
 const { NotFoundError, ValidationError, ConflictError } = require('../errors');
 const { getPaginationOptions, buildPaginationLinks } = require('../util/pagination');
+const { validateReadingPayload } = require('../util/validators');
 
 const router = express.Router();
 
@@ -130,8 +131,10 @@ router.post('/:id/readings', requireWriteScope, (req, res, next) => {
     const instId = parseInt(req.params.id, 10);
     const { recorded_at, power_kw, energy_kwh, voltage } = req.body;
 
-    if (!recorded_at || power_kw === undefined || energy_kwh === undefined || voltage === undefined) {
-        return next(new ValidationError('Missing required fields (recorded_at, power_kw, energy_kwh, voltage)'));
+    try {
+        validateReadingPayload(req.body);
+    } catch (valErr) {
+        return next(valErr);
     }
 
     try {
