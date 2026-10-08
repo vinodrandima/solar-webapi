@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
+const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
 const swaggerUi = require('swagger-ui-express');
 const { errorHandler, notFoundHandler } = require('./errors');
@@ -30,6 +31,11 @@ app.use(helmet({
     contentSecurityPolicy: false // Allows Swagger UI assets while enforcing standard security headers
 }));
 app.use(cors());
+
+if (process.env.NODE_ENV !== 'test') {
+    app.use(morgan('dev'));
+}
+
 app.use(express.json());
 app.use('/api', apiLimiter);
 
